@@ -1,0 +1,1097 @@
+	section	.text,"ax",@progbits
+	assume	adl = 1
+	section	.text,"ax",@progbits
+	public	_selectionDisplay
+_selectionDisplay:
+	ld	hl, -9
+	call	__frameset
+	ld	iy, -3145600
+	call	_os_HomeUp
+	ld	bc, 15
+	ld	hl, (ix + 12)
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, _questions
+	add	hl, de
+	ld	(ix - 9), hl
+	ld	de, (hl)
+	push	de
+	call	_os_PutStrFull
+	pop	hl
+	ld	hl, (_overwriteString)
+	push	hl
+	call	_os_PutStrLine
+	pop	hl
+	ld	iy, -3145600
+	call	_os_NewLine
+	ld	bc, 3
+	ld	hl, (ix + 9)
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, (ix - 9)
+	add	hl, de
+	ld	hl, (hl)
+	ld	de, (ix + 9)
+	push	de
+	push	hl
+	ld	hl, _.str.56
+	push	hl
+	call	_sprintf
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, _.str.56
+	push	hl
+	call	_os_PutStrFull
+	pop	hl
+	or	a, a
+	sbc	hl, hl
+	ld	(ix - 3), hl
+	ld	(ix - 6), hl
+	pea	ix - 6
+	pea	ix - 3
+	call	_os_GetCursorPos
+	pop	hl
+	pop	hl
+	ld	de, (ix - 3)
+	ld	bc, 10
+	push	de
+	pop	hl
+	or	a, a
+	sbc	hl, bc
+	call	pe, __setflag
+	push	de
+	pop	hl
+	jp	p, BB0_2
+	ld	hl, 9
+BB0_2:
+	or	a, a
+	sbc	hl, de
+BB0_3:
+	ld	(ix - 9), hl
+	ld	hl, (_overwriteString)
+	push	hl
+	call	_os_PutStrLine
+	pop	hl
+	ld	hl, (ix - 9)
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jr	z, BB0_5
+	ld	iy, -3145600
+	call	_os_NewLine
+	ld	hl, (ix - 9)
+	dec	hl
+	jr	BB0_3
+BB0_5:
+	ld	hl, (ix + 9)
+	dec	hl
+	ld	iy, (ix + 6)
+	ld	(iy), hl
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_bumpUpSelection
+_bumpUpSelection:
+	call	__frameset0
+	ld	hl, (ix + 6)
+	push	hl
+	pop	bc
+	ld	iy, (hl)
+	ld	de, 3
+	lea	hl, iy
+	or	a, a
+	sbc	hl, de
+	call	pe, __setflag
+	jp	p, BB1_2
+	ld	hl, (ix + 9)
+	ld	de, 2
+	add	iy, de
+	push	hl
+	push	iy
+	push	bc
+	call	_selectionDisplay
+	pop	hl
+	pop	hl
+	pop	hl
+BB1_2:
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_bumpDownSelection
+_bumpDownSelection:
+	call	__frameset0
+	ld	iy, (ix + 6)
+	ld	de, (iy)
+	ld	bc, 1
+	push	de
+	pop	hl
+	or	a, a
+	sbc	hl, bc
+	call	pe, __setflag
+	jp	m, BB2_2
+	ld	hl, (ix + 9)
+	push	hl
+	push	de
+	push	iy
+	call	_selectionDisplay
+	pop	hl
+	pop	hl
+	pop	hl
+BB2_2:
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_calculateFinalValuePartial
+_calculateFinalValuePartial:
+	ld	hl, -4
+	call	__frameset
+	ld	bc, (ix + 6)
+	ld	hl, (ix + 18)
+	ld	a, (ix + 9)
+	ld	e, (ix + 21)
+	call	__fadd
+	push	bc
+	pop	iy
+	ld	d, a
+	lea	hl, iy
+	ld	e, d
+	ld	bc, 0
+	xor	a, a
+	call	__fcmp
+	jr	z, BB3_2
+	ld	bc, (ix + 6)
+	ld	a, (ix + 9)
+	ld	hl, (ix + 12)
+	ld	e, (ix + 15)
+	call	__fmul
+	lea	hl, iy
+	ld	e, d
+	call	__fdiv
+	jr	BB3_3
+BB3_2:
+	ld	bc, (ix + 12)
+	ld	a, (ix + 15)
+	or	a, a
+	sbc	hl, hl
+	ld	e, 63
+	call	__fmul
+BB3_3:
+	ld	(ix - 3), bc
+	ld	(ix - 4), a
+	ld	bc, (ix + 6)
+	ld	a, (ix + 9)
+	ld	hl, (ix + 30)
+	ld	e, (ix + 33)
+	call	__fadd
+	push	bc
+	pop	iy
+	ld	d, a
+	lea	hl, iy
+	ld	e, d
+	ld	bc, 0
+	xor	a, a
+	call	__fcmp
+	jr	z, BB3_5
+	ld	bc, (ix + 6)
+	ld	a, (ix + 9)
+	ld	hl, (ix + 24)
+	ld	e, (ix + 27)
+	call	__fmul
+	lea	hl, iy
+	ld	e, d
+	call	__fdiv
+	jr	BB3_6
+BB3_5:
+	ld	bc, (ix + 24)
+	ld	a, (ix + 27)
+	or	a, a
+	sbc	hl, hl
+	ld	e, 63
+	call	__fmul
+BB3_6:
+	push	bc
+	pop	iy
+	ld	d, a
+	ld	bc, (ix - 3)
+	ld	a, (ix - 4)
+	ld	hl, (ix + 6)
+	ld	e, (ix + 9)
+	call	__fadd
+	lea	hl, iy
+	ld	e, d
+	call	__fadd
+	push	bc
+	pop	hl
+	ld	e, a
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_main
+_main:
+	ld	hl, -49
+	call	__frameset
+	ld	l, 0
+	ld	(ix - 30), hl
+	lea	hl, ix - 3
+	ld	(ix - 6), hl
+	ld	iy, -3145600
+	call	_os_ClrLCD
+	call	_os_HomeUp
+	call	_os_DrawStatusBar
+	ld	hl, _.str.57
+	push	hl
+	call	_os_PutStrFull
+	pop	hl
+BB4_1:
+	call	_os_GetCSC
+	or	a, a
+	jr	z, BB4_1
+	ld	hl, 1
+	push	hl
+	call	_os_FontSelect
+	pop	hl
+	or	a, a
+	sbc	hl, hl
+	ld	(ix - 33), hl
+	push	hl
+	pop	iy
+	ld	(ix - 36), hl
+	ld	e, h
+	ld	c, e
+	ld	(ix - 39), bc
+	ld	(ix - 42), hl
+	ld	(ix - 45), bc
+	ld	(ix - 12), hl
+	ld	(ix - 15), bc
+	ld	(ix - 18), hl
+	ld	(ix - 21), bc
+	ld	(ix - 24), hl
+	ld	(ix - 27), de
+BB4_3:
+	ld	de, 11
+	lea	hl, iy
+	or	a, a
+	sbc	hl, de
+	jp	z, BB4_31
+	or	a, a
+	sbc	hl, hl
+	ld	(ix - 3), hl
+	ld	(ix - 9), iy
+	push	iy
+BB4_5:
+	ld	hl, 1
+BB4_6:
+	push	hl
+	ld	hl, (ix - 6)
+	push	hl
+	call	_selectionDisplay
+	pop	hl
+BB4_7:
+	pop	hl
+	pop	hl
+BB4_8:
+	call	_os_GetCSC
+	ld	l, a
+	dec	a
+	ld	de, 0
+	cp	a, 15
+	jr	c, BB4_15
+	ld	a, l
+	cp	a, 18
+	jr	z, BB4_18
+	ld	a, l
+	cp	a, 26
+	jr	z, BB4_19
+	ld	a, l
+	cp	a, 34
+	jr	z, BB4_21
+	ld	a, l
+	cp	a, 35
+	jr	z, BB4_20
+	ld	a, l
+	cp	a, 55
+	jp	z, BB4_31
+	ld	a, l
+	cp	a, 56
+	jr	nz, BB4_8
+	jp	BB4_23
+BB4_15:
+	ld	e, a
+	ld	hl, JTI4_0
+	add	hl, de
+	add	hl, de
+	add	hl, de
+	ld	hl, (hl)
+	jp	(hl)
+BB4_16:
+	ld	hl, (ix - 9)
+	push	hl
+	ld	hl, (ix - 6)
+	push	hl
+	call	_bumpUpSelection
+	jr	BB4_7
+BB4_17:
+	ld	hl, (ix - 9)
+	push	hl
+	ld	hl, (ix - 6)
+	push	hl
+	call	_bumpDownSelection
+	jr	BB4_7
+BB4_18:
+	ld	hl, (ix - 9)
+	push	hl
+	ld	hl, 3
+	jr	BB4_6
+BB4_19:
+	ld	hl, (ix - 9)
+	push	hl
+	ld	hl, 2
+	jr	BB4_6
+BB4_20:
+	ld	hl, (ix - 9)
+	push	hl
+	ld	hl, 4
+	jp	BB4_6
+BB4_21:
+	ld	hl, (ix - 9)
+	push	hl
+	jp	BB4_5
+BB4_22:
+	ld	de, (ix - 3)
+	ld	hl, (ix - 9)
+	ld	bc, 12
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	iy, _keys
+	add	iy, bc
+	ex	de, hl
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	de, (iy)
+	push	de
+	pop	hl
+	ld	bc, 6
+	or	a, a
+	sbc	hl, bc
+	jr	c, BB4_24
+BB4_23:
+	ld	iy, (ix - 9)
+	inc	iy
+	jp	BB4_3
+BB4_24:
+	ld	hl, JTI4_1
+	add	hl, de
+	add	hl, de
+	add	hl, de
+	ld	hl, (hl)
+	jp	(hl)
+BB4_25:
+	ld	bc, (ix - 24)
+	ld	hl, (ix - 27)
+	ld	a, l
+	ld	hl, -8388608
+	ld	e, 63
+	call	__fadd
+	ld	(ix - 24), bc
+	ld	l, a
+	ld	(ix - 27), hl
+	jr	BB4_23
+BB4_26:
+	ld	bc, (ix - 18)
+	ld	hl, (ix - 21)
+	ld	a, l
+	ld	hl, -8388608
+	ld	e, 63
+	call	__fadd
+	ld	(ix - 18), bc
+	ld	l, a
+	ld	(ix - 21), hl
+	jr	BB4_23
+BB4_27:
+	ld	bc, (ix - 12)
+	ld	hl, (ix - 15)
+	ld	a, l
+	ld	hl, -8388608
+	ld	e, 63
+	call	__fadd
+	ld	(ix - 12), bc
+	ld	l, a
+	ld	(ix - 15), hl
+	jr	BB4_23
+BB4_28:
+	ld	bc, (ix - 36)
+	ld	hl, (ix - 39)
+	ld	a, l
+	ld	hl, -8388608
+	ld	e, 63
+	call	__fadd
+	ld	(ix - 36), bc
+	ld	l, a
+	ld	(ix - 39), hl
+	jr	BB4_23
+BB4_29:
+	ld	bc, (ix - 42)
+	ld	hl, (ix - 45)
+	ld	a, l
+	ld	hl, -8388608
+	ld	e, 63
+	call	__fadd
+	ld	(ix - 42), bc
+	ld	l, a
+	ld	(ix - 45), hl
+	jp	BB4_23
+BB4_30:
+	ld	bc, (ix - 33)
+	ld	hl, (ix - 30)
+	ld	a, l
+	ld	hl, -8388608
+	ld	e, 63
+	call	__fadd
+	ld	(ix - 33), bc
+	ld	l, a
+	ld	(ix - 30), hl
+	jp	BB4_23
+BB4_31:
+	ld	iy, -3145600
+	call	_os_ClrLCD
+	call	_os_HomeUp
+	call	_os_DrawStatusBar
+	ld	hl, (ix - 15)
+	push	hl
+	ld	hl, (ix - 12)
+	push	hl
+	ld	hl, (ix - 39)
+	push	hl
+	ld	hl, (ix - 36)
+	push	hl
+	ld	hl, (ix - 21)
+	push	hl
+	ld	hl, (ix - 18)
+	push	hl
+	ld	hl, (ix - 45)
+	push	hl
+	ld	hl, (ix - 42)
+	push	hl
+	ld	hl, (ix - 27)
+	push	hl
+	ld	hl, (ix - 24)
+	push	hl
+	call	_calculateFinalValuePartial
+	ld	(ix - 48), hl
+	ld	(ix - 49), e
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	hl, (ix - 15)
+	push	hl
+	ld	hl, (ix - 12)
+	push	hl
+	ld	hl, (ix - 30)
+	push	hl
+	ld	hl, (ix - 33)
+	push	hl
+	ld	hl, (ix - 27)
+	push	hl
+	ld	hl, (ix - 24)
+	push	hl
+	ld	hl, (ix - 45)
+	push	hl
+	ld	hl, (ix - 42)
+	push	hl
+	ld	hl, (ix - 21)
+	push	hl
+	ld	hl, (ix - 18)
+	push	hl
+	call	_calculateFinalValuePartial
+	ld	(ix - 6), hl
+	ld	(ix - 9), e
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	hl, (ix - 27)
+	push	hl
+	ld	hl, (ix - 24)
+	push	hl
+	ld	hl, (ix - 39)
+	push	hl
+	ld	hl, (ix - 36)
+	push	hl
+	ld	hl, (ix - 21)
+	push	hl
+	ld	hl, (ix - 18)
+	push	hl
+	ld	hl, (ix - 30)
+	push	hl
+	ld	hl, (ix - 33)
+	push	hl
+	ld	hl, (ix - 15)
+	push	hl
+	ld	hl, (ix - 12)
+	push	hl
+	call	_calculateFinalValuePartial
+	push	hl
+	pop	iy
+	ld	(ix - 18), iy
+	ld	d, e
+	ld	(ix - 21), d
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	bc, (ix - 48)
+	ld	a, (ix - 49)
+	ld	hl, (ix - 6)
+	ld	e, (ix - 9)
+	call	__fadd
+	lea	hl, iy
+	ld	e, d
+	call	__fadd
+	push	bc
+	pop	iy
+	ld	d, a
+	ld	bc, (ix - 48)
+	ld	a, (ix - 49)
+	lea	hl, iy
+	ld	e, d
+	call	__fdiv
+	ld	hl, -3670016
+	ld	e, 66
+	call	__fmul
+	ld	(ix - 12), bc
+	ld	l, a
+	ld	(ix - 15), hl
+	ld	bc, (ix - 6)
+	ld	a, (ix - 9)
+	lea	hl, iy
+	ld	e, d
+	call	__fdiv
+	ld	hl, -3670016
+	ld	e, 66
+	call	__fmul
+	ld	(ix - 6), bc
+	ld	l, a
+	ld	(ix - 9), hl
+	ld	bc, (ix - 18)
+	ld	a, (ix - 21)
+	lea	hl, iy
+	ld	e, d
+	call	__fdiv
+	ld	hl, -3670016
+	ld	e, 66
+	call	__fmul
+	ld	l, a
+	push	hl
+	push	bc
+	ld	hl, (ix - 9)
+	push	hl
+	ld	hl, (ix - 6)
+	push	hl
+	ld	hl, (ix - 15)
+	push	hl
+	ld	hl, (ix - 12)
+	push	hl
+	ld	hl, _.str.58
+	push	hl
+	ld	hl, _.str.56
+	push	hl
+	call	_sprintf
+	ld	hl, 24
+	add	hl, sp
+	ld	sp, hl
+	ld	hl, _.str.56
+	push	hl
+	call	_os_PutStrFull
+	pop	hl
+BB4_32:
+	call	_os_GetCSC
+	or	a, a
+	jr	z, BB4_32
+	or	a, a
+	sbc	hl, hl
+	jr	BB4_35
+BB4_34:
+	ld	hl, 1
+BB4_35:
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+	section	.rodata,"a",@progbits
+	private	JTI4_0
+JTI4_0:
+	dl	BB4_16
+	dl	BB4_17
+	dl	BB4_16
+	dl	BB4_17
+	dl	BB4_8
+	dl	BB4_8
+	dl	BB4_8
+	dl	BB4_8
+	dl	BB4_22
+	dl	BB4_8
+	dl	BB4_8
+	dl	BB4_8
+	dl	BB4_8
+	dl	BB4_8
+	dl	BB4_34
+	private	JTI4_1
+JTI4_1:
+	dl	BB4_25
+	dl	BB4_26
+	dl	BB4_27
+	dl	BB4_28
+	dl	BB4_29
+	dl	BB4_30
+
+	section	.rodata,"a",@progbits
+	private	_.str
+_.str:
+	db	"1. Why did you decide to take this test?", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.1
+_.str.1:
+	db	"(%d) To check how gay I am.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.2
+_.str.2:
+	db	"(%d) All my friends kept saying I was gay and should take this test.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.3
+_.str.3:
+	db	"(%d) Just to have fun!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.4
+_.str.4:
+	db	"(%d) To make sure I'm straight!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.5
+_.str.5:
+	db	"2. Have you ever looked at a person of the same sex and felt attracted in a sexual way?", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.6
+_.str.6:
+	db	"(%d) Yes, all the time!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.7
+_.str.7:
+	db	"(%d) Sometimes, but I also have opposite sex crushes!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.8
+_.str.8:
+	db	"(%d) Never, I am not gay at all!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.9
+_.str.9:
+	db	"(%d) Very rarely, but sometimes!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.10
+_.str.10:
+	db	"3. If your best friend confessed to you that they are gay, you would:", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.11
+_.str.11:
+	db	"(%d) Welcome them to the club!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.12
+_.str.12:
+	db	"(%d) Start flirting with them!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.13
+_.str.13:
+	db	"(%d) Make a joke about it.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.14
+_.str.14:
+	db	"(%d) Tell them that sometimes you feel the same way.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.15
+_.str.15:
+	db	"4. Have you ever worn or fantasized about wearing clothes of another sex?", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.16
+_.str.16:
+	db	"(%d) All the time!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.17
+_.str.17:
+	db	"(%d) Sometimes, but I wouldn't go out in public like that.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.18
+_.str.18:
+	db	"(%d) Never!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.19
+_.str.19:
+	db	"(%d) Rarely, but sometimes I may wear my partner's clothes!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.20
+_.str.20:
+	db	"5. If there were no people left in the world except for someone of the same sex, you would:", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.21
+_.str.21:
+	db	"(%d) Be happy, as no one would ever flirt with my partner!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.22
+_.str.22:
+	db	"(%d) Be dissapointed you are losing out on the other sex.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.23
+_.str.23:
+	db	"(%d) Fall into despair as you will never have a sexual partner again!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.24
+_.str.24:
+	db	"(%d) Be confused what just happened and do none of the others.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.25
+_.str.25:
+	db	"6. Have you ever kissed someone of the same sex?", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.26
+_.str.26:
+	db	"(%d) Yes, I do it all the time!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.27
+_.str.27:
+	db	"(%d) Once or twice!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.28
+_.str.28:
+	db	"(%d) No way I'm doing that!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.29
+_.str.29:
+	db	"(%d) I don't pull.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.30
+_.str.30:
+	db	"7. How frequently do you dream about the same sex romantically?", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.31
+_.str.31:
+	db	"(%d) All of my dreams are about the same sex!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.32
+_.str.32:
+	db	"(%d) Most of the time.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.33
+_.str.33:
+	db	"(%d) Rarely to never.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.34
+_.str.34:
+	db	"(%d) I don't dream about people.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.35
+_.str.35:
+	db	"8. Would you be comfortable with a gay colleague flirting with you at a (possibly hypothetical) workplace?", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.36
+_.str.36:
+	db	"(%d) Sure, it's a lot of fun!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.37
+_.str.37:
+	db	"(%d) I guess so, it depends on the situation!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.38
+_.str.38:
+	db	"(%d) I would feel very awkward about it!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.39
+_.str.39:
+	db	"(%d) It's never appropriate to flirt at work!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.40
+_.str.40:
+	db	"9. Your friends decided to go party at a gay bar, you would:", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.41
+_.str.41:
+	db	"(%d) Feel like you're going home! Let's go party!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.42
+_.str.42:
+	db	"(%d) Get excited to check out a new venue!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.43
+_.str.43:
+	db	"(%d) Feel threatened or uncomfortable.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.44
+_.str.44:
+	db	"(%d) Get secretly excited, as you always wanted to try being super fruity.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.45
+_.str.45:
+	db	"10. If your partner offered you a three way ""sleepover"" with someone of the same sex, you would:", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.46
+_.str.46:
+	db	"(%d) Feel excited about it!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.47
+_.str.47:
+	db	"(%d) Never! I only like the opposite sex!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.48
+_.str.48:
+	db	"(%d) Do it as I don't care about the sex of another person!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.49
+_.str.49:
+	db	"(%d) Again, I don't do much pulling.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.50
+_.str.50:
+	db	"11. What instrument do you play?", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.51
+_.str.51:
+	db	"(%d) You play some exotic instrument called the clarinet.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.52
+_.str.52:
+	db	"(%d) You play many instruments, but shun all clarinets.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.53
+_.str.53:
+	db	"(%d) You play any other good instrument.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.54
+_.str.54:
+	db	"(%d) You don't play an instrument.", 0
+
+	section	.data,"aw",@progbits
+	public	_questions
+_questions:
+	dl	_.str
+	dl	_.str.1
+	dl	_.str.2
+	dl	_.str.3
+	dl	_.str.4
+	dl	_.str.5
+	dl	_.str.6
+	dl	_.str.7
+	dl	_.str.8
+	dl	_.str.9
+	dl	_.str.10
+	dl	_.str.11
+	dl	_.str.12
+	dl	_.str.13
+	dl	_.str.14
+	dl	_.str.15
+	dl	_.str.16
+	dl	_.str.17
+	dl	_.str.18
+	dl	_.str.19
+	dl	_.str.20
+	dl	_.str.21
+	dl	_.str.22
+	dl	_.str.23
+	dl	_.str.24
+	dl	_.str.25
+	dl	_.str.26
+	dl	_.str.27
+	dl	_.str.28
+	dl	_.str.29
+	dl	_.str.30
+	dl	_.str.31
+	dl	_.str.32
+	dl	_.str.33
+	dl	_.str.34
+	dl	_.str.35
+	dl	_.str.36
+	dl	_.str.37
+	dl	_.str.38
+	dl	_.str.39
+	dl	_.str.40
+	dl	_.str.41
+	dl	_.str.42
+	dl	_.str.43
+	dl	_.str.44
+	dl	_.str.45
+	dl	_.str.46
+	dl	_.str.47
+	dl	_.str.48
+	dl	_.str.49
+	dl	_.str.50
+	dl	_.str.51
+	dl	_.str.52
+	dl	_.str.53
+	dl	_.str.54
+
+	section	.rodata,"a",@progbits
+	private	_.str.55
+_.str.55:
+	db	"                              ", 0
+
+	section	.data,"aw",@progbits
+	public	_overwriteString
+_overwriteString:
+	dl	_.str.55
+
+	section	.rodata,"a",@progbits
+	public	_keys
+_keys:
+	dl	2
+	dl	5
+	dl	6
+	dl	3
+	dl	5
+	dl	1
+	dl	0
+	dl	1
+	dl	2
+	dl	5
+	dl	6
+	dl	2
+	dl	2
+	dl	5
+	dl	0
+	dl	1
+	dl	2
+	dl	1
+	dl	0
+	dl	6
+	dl	5
+	dl	1
+	dl	0
+	dl	6
+	dl	2
+	dl	1
+	dl	4
+	dl	6
+	dl	5
+	dl	5
+	dl	4
+	dl	6
+	dl	2
+	dl	5
+	dl	0
+	dl	2
+	dl	2
+	dl	0
+	dl	1
+	dl	6
+	dl	5
+	dl	0
+	dl	6
+	dl	6
+
+	section	.rodata,"a",@progbits
+	public	_colors
+_colors:
+	dl	55534
+	dl	37457
+	dl	434
+	dl	30397
+
+	section	.rodata,"a",@progbits
+	private	_.str.56
+_.str.56:
+	db	1 dup 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.57
+_.str.57:
+	db	"This is an ""Am I gay?"" test port. Use arrow keys or number keys to choose your answer, then press enter to continue, press clear to quit, or press mode to skip to the results. There are no accuracy guarantees. All rights are reserved. Press any key to begin.", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.58
+_.str.58:
+	db	"You are %.1f%% straight, %.1f%% bisexual, and %.1f%% gay.", 0
+
+	ident	"clang version 15.0.0 (https://github.com/jacobly0/llvm-project 6d9aa7a16db70f3d02ae304b08d4a03011281fef)"
+	extern	__Unwind_SjLj_Register
+	extern	__frameset
+	extern	_os_PutStrLine
+	extern	_sprintf
+	extern	__fadd
+	extern	_os_ClrLCD
+	extern	_os_DrawStatusBar
+	extern	_os_GetCursorPos
+	extern	__fmul
+	extern	__setflag
+	extern	_os_PutStrFull
+	extern	__fdiv
+	extern	__imulu
+	extern	__Unwind_SjLj_Unregister
+	extern	_os_NewLine
+	extern	_os_FontSelect
+	extern	_os_GetCSC
+	extern	__fcmp
+	extern	__frameset0
+	extern	_os_HomeUp

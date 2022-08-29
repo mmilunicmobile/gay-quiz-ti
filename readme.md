@@ -1,0 +1,1 @@
+It's a gay quiz. What did you expect?
