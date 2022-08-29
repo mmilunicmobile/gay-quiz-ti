@@ -4,6 +4,14 @@
 #include <stdio.h>
 #include <ti/ui.h>
 
+/*
+cis, bi, and gay are to be used if an answer is soley answerable by someone who is that
+eg "I am gay."
+cisgay, cisbi, and bigay can be used if it could be answerable by either
+eg "I am not gay."
+nil should be used if it could be answered by any or none
+eg "I like oranges."
+*/
 enum sexuality
 {
     cis,
@@ -43,9 +51,7 @@ const enum sexuality keys[11][4] = {
     {gay, cis, bi, nil},
     {bigay, cis, nil, nil}};
 
-const uint24_t colors[4] = {
-    0xD8EE, 0x9251, 0x01B2, 0x76BD};
-
+// this displays the required information given the question number, the answer number, and a pointer to the response number variable
 void selectionDisplay(int *response, int number, int question)
 {
     os_HomeUp();
@@ -58,6 +64,8 @@ void selectionDisplay(int *response, int number, int question)
         sprintf(tempString, questions[question][number], number);
         os_PutStrFull(tempString);
     }
+
+    // this section gets rid of any extra text remaining
     unsigned int row = 0;
     unsigned int col = 0;
     os_GetCursorPos(&row, &col);
@@ -71,6 +79,7 @@ void selectionDisplay(int *response, int number, int question)
     *response = number - 1;
 }
 
+// for navigating selection with arrow keys
 void bumpUpSelection(int *response, int question)
 {
     if (*response < 3)
@@ -79,6 +88,7 @@ void bumpUpSelection(int *response, int question)
     }
 }
 
+// for navigating selection with arrow keys
 void bumpDownSelection(int *response, int question)
 {
     if (*response > 0)
@@ -87,6 +97,7 @@ void bumpDownSelection(int *response, int question)
     }
 }
 
+// no longer used, but is a somewhat useful solution for calculating final values. guaranteed to return a result
 float calculateFinalValuePartial(float value, float partialA, float valueA, float partialB, float valueB)
 {
     float fullPartialA, fullPartialB;
@@ -112,12 +123,57 @@ float calculateFinalValuePartial(float value, float partialA, float valueA, floa
     return value + fullPartialA + fullPartialB;
 }
 
+/*
+a much more advanced method to calculate proportions
+p_a, p_b, and p_c are pointers to the final probability outputs
+c_a, c_b, and c_c are the straight answer counts
+c_ab, c_ac, c_bc are the mixed answer counts
+c_abc is the full answer count
+*/
+void calculateFinalPortions(
+    float *p_a, float *p_b, float *p_c,
+    float c_a, float c_b, float c_c,
+    float c_ab, float c_ac, float c_bc, float c_abc)
+{
+    *p_a = 0.33;
+    *p_b = 0.33;
+    *p_c = 0.34;
+
+    float c = c_a + c_b + c_c + c_ab + c_ac + c_bc + c_abc;
+
+    // dont ask, it just works
+    for (int i = 0; i < 20; i++)
+    {
+        float t_p_a = (c_a +
+                       c_ab * (*p_a) / (*p_a + *p_b) +
+                       c_ac * (*p_a) / (*p_a + *p_c) +
+                       c_abc * (*p_a)) /
+                      c;
+        float t_p_b = (c_b +
+                       c_ab * (*p_b) / (*p_a + *p_b) +
+                       c_bc * (*p_b) / (*p_b + *p_c) +
+                       c_abc * (*p_b)) /
+                      c;
+        float t_p_c = (c_c +
+                       c_ac * (*p_c) / (*p_a + *p_c) +
+                       c_bc * (*p_c) / (*p_b + *p_c) +
+                       c_abc * (*p_c)) /
+                      c;
+        *p_a = t_p_a;
+        *p_b = t_p_b;
+        *p_c = t_p_c;
+    }
+}
+
 int main(void)
 {
 
+    // initializes variable for tracking sums
     float cisCount = 0, biCount = 0, gayCount = 0;
 
     float cisbiCount = 0, cisgayCount = 0, bigayCount = 0;
+
+    float cisbigayCount = 0;
 
     os_ClrHome();
 
@@ -128,14 +184,13 @@ int main(void)
         // wait
     };
 
-    os_FontSelect(os_LargeFont);
-
     for (int i = 0; i < 11; i++)
     {
         int response = 0;
 
         selectionDisplay(&response, 1, i);
 
+        // loops till it gets an appropriate response
         while (true)
         {
             uint8_t key = os_GetCSC();
@@ -182,6 +237,7 @@ int main(void)
 
             break;
         }
+        // adds to appropriate count
         switch (keys[i][response])
         {
         case cis:
@@ -203,28 +259,50 @@ int main(void)
             bigayCount++;
             break;
         case nil:
+            cisbigayCount++;
             break;
         }
     afterSwitchStatement:;
     }
-afterForLoop:
-    os_ClrHome();
+afterForLoop:;
     char *resultString = "";
 
-    float finalCisCount = calculateFinalValuePartial(cisCount, cisbiCount, biCount, cisgayCount, gayCount);
-    float finalBiCount = calculateFinalValuePartial(biCount, cisbiCount, cisCount, bigayCount, gayCount);
-    float finalGayCount = calculateFinalValuePartial(gayCount, bigayCount, biCount, cisgayCount, cisCount);
+    // calculates results
+    float finalCisPortion;
+    float finalBiPortion;
+    float finalGayPortion;
 
-    float answeredSum = finalCisCount + finalBiCount + finalGayCount;
+    calculateFinalPortions(
+        &finalCisPortion, &finalBiPortion, &finalGayPortion,
+        cisCount, biCount, gayCount,
+        cisbiCount, cisgayCount, bigayCount, cisbigayCount);
 
-    sprintf(resultString, "You are %.1f%% straight, %.1f%% bisexual, and %.1f%% gay.", finalCisCount / answeredSum * 100, finalBiCount / answeredSum * 100, finalGayCount / answeredSum * 100);
+    // generates results string
+    sprintf(resultString, "You are %.1f%% straight, %.1f%% bisexual, and %.1f%% gay. Thank you for taking my \"Am I gay?\" test! Share it with all your friends! Take it again! Use it to define your personality! I don't care.",
+            finalCisPortion * 100, finalBiPortion * 100, finalGayPortion * 100);
+
+    // prints out results string
+    os_ClrHome();
 
     os_PutStrFull(resultString);
+
+    // fills in blanks
+    {
+        unsigned int row = 0;
+        unsigned int col = 0;
+        os_GetCursorPos(&row, &col);
+        for (int i = row; i < 9; i++)
+        {
+            os_PutStrLine(overwriteString);
+            os_NewLine();
+        }
+        os_PutStrLine(overwriteString);
+    }
 
     while (!os_GetCSC())
     {
         // wait
-    };
+    }
 
     return 0;
 }

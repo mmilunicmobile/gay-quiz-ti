@@ -239,14 +239,262 @@ BB3_6:
 	section	.text,"ax",@progbits
 
 	section	.text,"ax",@progbits
+	public	_calculateFinalPortions
+_calculateFinalPortions:
+	ld	hl, -35
+	call	__frameset
+	ld	iy, (ix + 6)
+	ld	bc, -5704253
+	ld	a, 62
+	ld	(ix - 1), a
+	ld	de, -5368709
+	ld	(iy), bc
+	ld	(iy + 3), a
+	ld	hl, (ix + 9)
+	ld	(hl), bc
+	ld	iy, (ix + 9)
+	ld	(iy + 3), a
+	ld	(ix - 4), de
+	ld	hl, (ix + 12)
+	ld	(hl), de
+	ld	iy, (ix + 12)
+	ld	(iy + 3), a
+	ld	bc, (ix + 15)
+	ld	a, (ix + 18)
+	ld	hl, (ix + 21)
+	ld	e, (ix + 24)
+	call	__fadd
+	ld	hl, (ix + 27)
+	ld	e, (ix + 30)
+	call	__fadd
+	ld	hl, (ix + 33)
+	ld	e, (ix + 36)
+	call	__fadd
+	ld	hl, (ix + 39)
+	ld	e, (ix + 42)
+	call	__fadd
+	ld	hl, (ix + 45)
+	ld	e, (ix + 48)
+	call	__fadd
+	ld	hl, (ix + 51)
+	ld	e, (ix + 54)
+	call	__fadd
+	ld	de, 20
+	ld	(ix - 7), bc
+	ld	(ix - 8), a
+BB4_1:
+	push	de
+	pop	hl
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jp	z, BB4_3
+	ld	iy, (ix + 6)
+	ld	bc, (iy)
+	ld	(ix - 34), bc
+	lea	hl, iy + 3
+	ld	(ix - 15), de
+	ld	d, (hl)
+	ld	a, d
+	ld	hl, (ix + 33)
+	ld	e, (ix + 36)
+	call	__fmul
+	ld	(ix - 18), bc
+	ld	(ix - 19), a
+	ld	hl, (ix + 9)
+	push	hl
+	pop	iy
+	ld	hl, (iy)
+	ld	(ix - 11), hl
+	lea	iy, iy + 3
+	ld	e, (iy)
+	ld	iy, (ix - 34)
+	lea	bc, iy
+	ld	a, d
+	ld	(ix - 12), e
+	call	__fadd
+	push	bc
+	pop	hl
+	ld	(ix - 26), hl
+	ld	e, a
+	ld	(ix - 27), e
+	ld	bc, (ix - 18)
+	ld	a, (ix - 19)
+	call	__fdiv
+	ld	hl, (ix + 15)
+	ld	e, (ix + 18)
+	call	__fadd
+	ld	(ix - 18), bc
+	ld	(ix - 19), a
+	lea	bc, iy
+	ld	a, d
+	ld	hl, (ix + 39)
+	ld	e, (ix + 42)
+	call	__fmul
+	ld	(ix - 30), bc
+	ld	(ix - 31), a
+	ld	bc, (ix - 4)
+	ld	a, (ix - 1)
+	lea	hl, iy
+	ld	e, d
+	call	__fadd
+	push	bc
+	pop	hl
+	ld	(ix - 22), hl
+	ld	e, a
+	ld	(ix - 23), e
+	ld	bc, (ix - 30)
+	ld	a, (ix - 31)
+	call	__fdiv
+	ld	hl, (ix - 18)
+	ld	e, (ix - 19)
+	call	__fadd
+	ld	(ix - 18), bc
+	ld	(ix - 19), a
+	ld	hl, (ix + 51)
+	push	hl
+	pop	bc
+	ld	a, (ix + 54)
+	lea	hl, iy
+	ld	e, d
+	call	__fmul
+	ld	hl, (ix - 18)
+	ld	e, (ix - 19)
+	call	__fadd
+	ld	hl, (ix - 7)
+	ld	e, (ix - 8)
+	call	__fdiv
+	ld	(ix - 18), bc
+	ld	(ix - 19), a
+	ld	iy, (ix - 11)
+	lea	bc, iy
+	ld	d, (ix - 12)
+	ld	a, d
+	ld	hl, (ix + 33)
+	ld	e, (ix + 36)
+	call	__fmul
+	ld	hl, (ix - 26)
+	ld	e, (ix - 27)
+	call	__fdiv
+	ld	hl, (ix + 21)
+	ld	e, (ix + 24)
+	call	__fadd
+	ld	(ix - 30), bc
+	ld	(ix - 31), a
+	lea	bc, iy
+	ld	a, d
+	ld	hl, (ix + 45)
+	ld	e, (ix + 48)
+	call	__fmul
+	ld	(ix - 34), bc
+	ld	(ix - 35), a
+	ld	bc, (ix - 4)
+	ld	a, (ix - 1)
+	lea	hl, iy
+	ld	e, d
+	call	__fadd
+	push	bc
+	pop	hl
+	ld	(ix - 26), hl
+	ld	e, a
+	ld	(ix - 27), e
+	ld	bc, (ix - 34)
+	ld	a, (ix - 35)
+	call	__fdiv
+	ld	hl, (ix - 30)
+	ld	e, (ix - 31)
+	call	__fadd
+	push	bc
+	pop	iy
+	ld	d, a
+	ld	bc, (ix + 51)
+	ld	a, (ix + 54)
+	ld	hl, (ix - 11)
+	ld	e, (ix - 12)
+	call	__fmul
+	lea	hl, iy
+	ld	e, d
+	call	__fadd
+	ld	hl, (ix - 7)
+	ld	e, (ix - 8)
+	call	__fdiv
+	ld	(ix - 11), bc
+	ld	(ix - 12), a
+	ld	iy, (ix - 4)
+	lea	bc, iy
+	ld	d, (ix - 1)
+	ld	a, d
+	ld	hl, (ix + 39)
+	ld	e, (ix + 42)
+	call	__fmul
+	ld	hl, (ix - 22)
+	ld	e, (ix - 23)
+	call	__fdiv
+	ld	hl, (ix + 27)
+	ld	e, (ix + 30)
+	call	__fadd
+	ld	(ix - 22), bc
+	ld	(ix - 23), a
+	lea	bc, iy
+	ld	a, d
+	ld	hl, (ix + 45)
+	ld	e, (ix + 48)
+	call	__fmul
+	ld	hl, (ix - 26)
+	ld	e, (ix - 27)
+	call	__fdiv
+	ld	hl, (ix - 22)
+	ld	e, (ix - 23)
+	call	__fadd
+	push	bc
+	pop	iy
+	ld	d, a
+	ld	bc, (ix + 51)
+	ld	a, (ix + 54)
+	ld	hl, (ix - 4)
+	ld	e, (ix - 1)
+	call	__fmul
+	lea	hl, iy
+	ld	e, d
+	call	__fadd
+	ld	hl, (ix - 7)
+	ld	e, (ix - 8)
+	call	__fdiv
+	ld	de, (ix - 15)
+	ld	iy, (ix + 6)
+	ld	hl, (ix - 18)
+	ld	(iy), hl
+	ld	l, (ix - 19)
+	ld	(iy + 3), l
+	ld	iy, (ix + 9)
+	ld	hl, (ix - 11)
+	ld	(iy), hl
+	ld	l, (ix - 12)
+	ld	(iy + 3), l
+	ld	hl, (ix + 12)
+	push	hl
+	pop	iy
+	ld	(ix - 4), bc
+	ld	(iy), bc
+	ld	(ix - 1), a
+	ld	(iy + 3), a
+	dec	de
+	jp	BB4_1
+BB4_3:
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
 	public	_main
 _main:
-	ld	hl, -49
+	ld	hl, -66
 	call	__frameset
 	ld	l, 0
 	ld	(ix - 30), hl
 	lea	hl, ix - 3
-	ld	(ix - 6), hl
+	ld	(ix - 21), hl
 	ld	iy, -3145600
 	call	_os_ClrLCD
 	call	_os_HomeUp
@@ -255,123 +503,122 @@ _main:
 	push	hl
 	call	_os_PutStrFull
 	pop	hl
-BB4_1:
+BB5_1:
 	call	_os_GetCSC
 	or	a, a
-	jr	z, BB4_1
-	ld	hl, 1
-	push	hl
-	call	_os_FontSelect
-	pop	hl
+	jr	z, BB5_1
 	or	a, a
 	sbc	hl, hl
 	ld	(ix - 33), hl
+	ld	(ix - 27), hl
+	ld	c, h
+	ld	e, c
+	ld	(ix - 36), de
+	ld	(ix - 39), hl
+	ld	(ix - 42), de
+	ld	(ix - 48), hl
+	ld	(ix - 51), de
+	ld	(ix - 54), hl
+	ld	(ix - 57), de
+	ld	(ix - 60), hl
+	ld	(ix - 63), de
 	push	hl
 	pop	iy
-	ld	(ix - 36), hl
-	ld	e, h
-	ld	c, e
-	ld	(ix - 39), bc
-	ld	(ix - 42), hl
-	ld	(ix - 45), bc
-	ld	(ix - 12), hl
-	ld	(ix - 15), bc
-	ld	(ix - 18), hl
-	ld	(ix - 21), bc
-	ld	(ix - 24), hl
-	ld	(ix - 27), de
-BB4_3:
+	ld	(ix - 45), hl
+BB5_3:
 	ld	de, 11
 	lea	hl, iy
 	or	a, a
 	sbc	hl, de
-	jp	z, BB4_31
+	ld	de, (ix - 27)
+	jp	z, BB5_35
+	ld	(ix - 66), bc
 	or	a, a
 	sbc	hl, hl
 	ld	(ix - 3), hl
-	ld	(ix - 9), iy
+	ld	(ix - 24), iy
 	push	iy
-BB4_5:
+BB5_5:
 	ld	hl, 1
-BB4_6:
+BB5_6:
 	push	hl
-	ld	hl, (ix - 6)
+	ld	hl, (ix - 21)
 	push	hl
 	call	_selectionDisplay
 	pop	hl
-BB4_7:
+BB5_7:
 	pop	hl
 	pop	hl
-BB4_8:
+BB5_8:
 	call	_os_GetCSC
 	ld	l, a
 	dec	a
 	ld	de, 0
 	cp	a, 15
-	jr	c, BB4_15
+	jr	c, BB5_15
 	ld	a, l
 	cp	a, 18
-	jr	z, BB4_18
+	jr	z, BB5_18
 	ld	a, l
 	cp	a, 26
-	jr	z, BB4_19
+	jr	z, BB5_19
 	ld	a, l
 	cp	a, 34
-	jr	z, BB4_21
+	jr	z, BB5_21
 	ld	a, l
 	cp	a, 35
-	jr	z, BB4_20
+	jr	z, BB5_20
 	ld	a, l
 	cp	a, 55
-	jp	z, BB4_31
+	jp	z, BB5_34
 	ld	a, l
 	cp	a, 56
-	jr	nz, BB4_8
-	jp	BB4_23
-BB4_15:
+	jr	nz, BB5_8
+	jp	BB5_23
+BB5_15:
 	ld	e, a
-	ld	hl, JTI4_0
+	ld	hl, JTI5_0
 	add	hl, de
 	add	hl, de
 	add	hl, de
 	ld	hl, (hl)
 	jp	(hl)
-BB4_16:
-	ld	hl, (ix - 9)
+BB5_16:
+	ld	hl, (ix - 24)
 	push	hl
-	ld	hl, (ix - 6)
+	ld	hl, (ix - 21)
 	push	hl
 	call	_bumpUpSelection
-	jr	BB4_7
-BB4_17:
-	ld	hl, (ix - 9)
+	jr	BB5_7
+BB5_17:
+	ld	hl, (ix - 24)
 	push	hl
-	ld	hl, (ix - 6)
+	ld	hl, (ix - 21)
 	push	hl
 	call	_bumpDownSelection
-	jr	BB4_7
-BB4_18:
-	ld	hl, (ix - 9)
+	jr	BB5_7
+BB5_18:
+	ld	hl, (ix - 24)
 	push	hl
 	ld	hl, 3
-	jr	BB4_6
-BB4_19:
-	ld	hl, (ix - 9)
+	jr	BB5_6
+BB5_19:
+	ld	hl, (ix - 24)
 	push	hl
 	ld	hl, 2
-	jr	BB4_6
-BB4_20:
-	ld	hl, (ix - 9)
+	jr	BB5_6
+BB5_20:
+	ld	hl, (ix - 24)
 	push	hl
 	ld	hl, 4
-	jp	BB4_6
-BB4_21:
-	ld	hl, (ix - 9)
+	jp	BB5_6
+BB5_21:
+	ld	hl, (ix - 24)
 	push	hl
-	jp	BB4_5
-BB4_22:
+	jp	BB5_5
+BB5_22:
 	ld	de, (ix - 3)
-	ld	hl, (ix - 9)
+	ld	hl, (ix - 24)
 	ld	bc, 12
 	call	__imulu
 	push	hl
@@ -387,77 +634,37 @@ BB4_22:
 	ld	de, (iy)
 	push	de
 	pop	hl
-	ld	bc, 6
+	ld	bc, 7
 	or	a, a
 	sbc	hl, bc
-	jr	c, BB4_24
-BB4_23:
-	ld	iy, (ix - 9)
+	jr	c, BB5_25
+BB5_23:
+	ld	bc, (ix - 66)
+BB5_24:
+	ld	iy, (ix - 24)
 	inc	iy
-	jp	BB4_3
-BB4_24:
-	ld	hl, JTI4_1
+	jp	BB5_3
+BB5_25:
+	ld	hl, JTI5_1
 	add	hl, de
 	add	hl, de
 	add	hl, de
 	ld	hl, (hl)
+	ld	bc, (ix - 27)
 	jp	(hl)
-BB4_25:
-	ld	bc, (ix - 24)
-	ld	hl, (ix - 27)
+BB5_26:
+	ld	(ix - 27), bc
+	ld	bc, (ix - 45)
+	ld	hl, (ix - 66)
 	ld	a, l
 	ld	hl, -8388608
 	ld	e, 63
 	call	__fadd
-	ld	(ix - 24), bc
-	ld	l, a
-	ld	(ix - 27), hl
-	jr	BB4_23
-BB4_26:
-	ld	bc, (ix - 18)
-	ld	hl, (ix - 21)
-	ld	a, l
-	ld	hl, -8388608
-	ld	e, 63
-	call	__fadd
-	ld	(ix - 18), bc
-	ld	l, a
-	ld	(ix - 21), hl
-	jr	BB4_23
-BB4_27:
-	ld	bc, (ix - 12)
-	ld	hl, (ix - 15)
-	ld	a, l
-	ld	hl, -8388608
-	ld	e, 63
-	call	__fadd
-	ld	(ix - 12), bc
-	ld	l, a
-	ld	(ix - 15), hl
-	jr	BB4_23
-BB4_28:
-	ld	bc, (ix - 36)
-	ld	hl, (ix - 39)
-	ld	a, l
-	ld	hl, -8388608
-	ld	e, 63
-	call	__fadd
-	ld	(ix - 36), bc
-	ld	l, a
-	ld	(ix - 39), hl
-	jr	BB4_23
-BB4_29:
-	ld	bc, (ix - 42)
-	ld	hl, (ix - 45)
-	ld	a, l
-	ld	hl, -8388608
-	ld	e, 63
-	call	__fadd
-	ld	(ix - 42), bc
-	ld	l, a
-	ld	(ix - 45), hl
-	jp	BB4_23
-BB4_30:
+	ld	(ix - 45), bc
+	ld	c, a
+	jr	BB5_24
+BB5_27:
+	ld	(ix - 27), bc
 	ld	bc, (ix - 33)
 	ld	hl, (ix - 30)
 	ld	a, l
@@ -467,144 +674,130 @@ BB4_30:
 	ld	(ix - 33), bc
 	ld	l, a
 	ld	(ix - 30), hl
-	jp	BB4_23
-BB4_31:
-	ld	iy, -3145600
-	call	_os_ClrLCD
-	call	_os_HomeUp
-	call	_os_DrawStatusBar
-	ld	hl, (ix - 15)
+	jr	BB5_23
+BB5_28:
+	ld	hl, (ix - 36)
+	ld	a, l
+	ld	hl, -8388608
+	ld	e, 63
+	call	__fadd
+	ld	(ix - 27), bc
+	ld	l, a
+	ld	(ix - 36), hl
+	jr	BB5_23
+BB5_29:
+	ld	(ix - 27), bc
+	ld	bc, (ix - 48)
+	ld	hl, (ix - 51)
+	ld	a, l
+	ld	hl, -8388608
+	ld	e, 63
+	call	__fadd
+	ld	(ix - 48), bc
+	ld	l, a
+	ld	(ix - 51), hl
+	jp	BB5_23
+BB5_30:
+	ld	(ix - 27), bc
+	ld	bc, (ix - 39)
+	ld	hl, (ix - 42)
+	ld	a, l
+	ld	hl, -8388608
+	ld	e, 63
+	call	__fadd
+	ld	(ix - 39), bc
+	ld	l, a
+	ld	(ix - 42), hl
+	jp	BB5_23
+BB5_31:
+	ld	(ix - 27), bc
+	ld	bc, (ix - 54)
+	ld	hl, (ix - 57)
+	ld	a, l
+	ld	hl, -8388608
+	ld	e, 63
+	call	__fadd
+	ld	(ix - 54), bc
+	ld	l, a
+	ld	(ix - 57), hl
+	jp	BB5_23
+BB5_32:
+	ld	(ix - 27), bc
+	ld	bc, (ix - 60)
+	ld	hl, (ix - 63)
+	ld	a, l
+	ld	hl, -8388608
+	ld	e, 63
+	call	__fadd
+	ld	(ix - 60), bc
+	ld	l, a
+	ld	(ix - 63), hl
+	jp	BB5_23
+BB5_33:
+	ld	hl, 1
+	jp	BB5_42
+BB5_34:
+	ld	de, (ix - 27)
+	ld	bc, (ix - 66)
+BB5_35:
+	ld	hl, (ix - 63)
 	push	hl
-	ld	hl, (ix - 12)
+	ld	hl, (ix - 60)
+	push	hl
+	ld	hl, (ix - 57)
+	push	hl
+	ld	hl, (ix - 54)
+	push	hl
+	ld	hl, (ix - 51)
+	push	hl
+	ld	hl, (ix - 48)
+	push	hl
+	ld	hl, (ix - 42)
 	push	hl
 	ld	hl, (ix - 39)
 	push	hl
 	ld	hl, (ix - 36)
 	push	hl
-	ld	hl, (ix - 21)
-	push	hl
-	ld	hl, (ix - 18)
-	push	hl
-	ld	hl, (ix - 45)
-	push	hl
-	ld	hl, (ix - 42)
-	push	hl
-	ld	hl, (ix - 27)
-	push	hl
-	ld	hl, (ix - 24)
-	push	hl
-	call	_calculateFinalValuePartial
-	ld	(ix - 48), hl
-	ld	(ix - 49), e
-	ld	hl, 30
-	add	hl, sp
-	ld	sp, hl
-	ld	hl, (ix - 15)
-	push	hl
-	ld	hl, (ix - 12)
-	push	hl
+	push	de
 	ld	hl, (ix - 30)
 	push	hl
 	ld	hl, (ix - 33)
 	push	hl
-	ld	hl, (ix - 27)
-	push	hl
-	ld	hl, (ix - 24)
-	push	hl
+	push	bc
 	ld	hl, (ix - 45)
 	push	hl
-	ld	hl, (ix - 42)
-	push	hl
-	ld	hl, (ix - 21)
-	push	hl
-	ld	hl, (ix - 18)
-	push	hl
-	call	_calculateFinalValuePartial
-	ld	(ix - 6), hl
-	ld	(ix - 9), e
-	ld	hl, 30
+	pea	ix - 15
+	pea	ix - 11
+	pea	ix - 7
+	call	_calculateFinalPortions
+	ld	hl, 51
 	add	hl, sp
 	ld	sp, hl
+	ld	bc, (ix - 7)
+	ld	a, (ix - 4)
+	ld	hl, -3670016
+	ld	e, 66
+	call	__fmul
+	ld	(ix - 21), bc
+	ld	c, a
+	ld	(ix - 24), bc
+	ld	bc, (ix - 11)
+	ld	a, (ix - 8)
+	call	__fmul
+	ld	(ix - 27), bc
+	ld	iyl, a
+	ld	bc, (ix - 15)
+	ld	a, (ix - 12)
+	call	__fmul
+	ld	l, a
+	push	hl
+	push	bc
+	push	iy
 	ld	hl, (ix - 27)
 	push	hl
 	ld	hl, (ix - 24)
 	push	hl
-	ld	hl, (ix - 39)
-	push	hl
-	ld	hl, (ix - 36)
-	push	hl
 	ld	hl, (ix - 21)
-	push	hl
-	ld	hl, (ix - 18)
-	push	hl
-	ld	hl, (ix - 30)
-	push	hl
-	ld	hl, (ix - 33)
-	push	hl
-	ld	hl, (ix - 15)
-	push	hl
-	ld	hl, (ix - 12)
-	push	hl
-	call	_calculateFinalValuePartial
-	push	hl
-	pop	iy
-	ld	(ix - 18), iy
-	ld	d, e
-	ld	(ix - 21), d
-	ld	hl, 30
-	add	hl, sp
-	ld	sp, hl
-	ld	bc, (ix - 48)
-	ld	a, (ix - 49)
-	ld	hl, (ix - 6)
-	ld	e, (ix - 9)
-	call	__fadd
-	lea	hl, iy
-	ld	e, d
-	call	__fadd
-	push	bc
-	pop	iy
-	ld	d, a
-	ld	bc, (ix - 48)
-	ld	a, (ix - 49)
-	lea	hl, iy
-	ld	e, d
-	call	__fdiv
-	ld	hl, -3670016
-	ld	e, 66
-	call	__fmul
-	ld	(ix - 12), bc
-	ld	l, a
-	ld	(ix - 15), hl
-	ld	bc, (ix - 6)
-	ld	a, (ix - 9)
-	lea	hl, iy
-	ld	e, d
-	call	__fdiv
-	ld	hl, -3670016
-	ld	e, 66
-	call	__fmul
-	ld	(ix - 6), bc
-	ld	l, a
-	ld	(ix - 9), hl
-	ld	bc, (ix - 18)
-	ld	a, (ix - 21)
-	lea	hl, iy
-	ld	e, d
-	call	__fdiv
-	ld	hl, -3670016
-	ld	e, 66
-	call	__fmul
-	ld	l, a
-	push	hl
-	push	bc
-	ld	hl, (ix - 9)
-	push	hl
-	ld	hl, (ix - 6)
-	push	hl
-	ld	hl, (ix - 15)
-	push	hl
-	ld	hl, (ix - 12)
 	push	hl
 	ld	hl, _.str.58
 	push	hl
@@ -614,50 +807,91 @@ BB4_31:
 	ld	hl, 24
 	add	hl, sp
 	ld	sp, hl
+	ld	iy, -3145600
+	call	_os_ClrLCD
+	call	_os_HomeUp
+	call	_os_DrawStatusBar
 	ld	hl, _.str.56
 	push	hl
 	call	_os_PutStrFull
 	pop	hl
-BB4_32:
-	call	_os_GetCSC
-	or	a, a
-	jr	z, BB4_32
 	or	a, a
 	sbc	hl, hl
-	jr	BB4_35
-BB4_34:
-	ld	hl, 1
-BB4_35:
+	ld	(ix - 3), hl
+	ld	(ix - 18), hl
+	pea	ix - 18
+	pea	ix - 3
+	call	_os_GetCursorPos
+	pop	hl
+	pop	hl
+	ld	de, (ix - 3)
+	ld	bc, 10
+	push	de
+	pop	hl
+	or	a, a
+	sbc	hl, bc
+	call	pe, __setflag
+	push	de
+	pop	hl
+	jp	p, BB5_37
+	ld	hl, 9
+BB5_37:
+	or	a, a
+	sbc	hl, de
+BB5_38:
+	ld	(ix - 21), hl
+	ld	hl, (_overwriteString)
+	push	hl
+	call	_os_PutStrLine
+	pop	hl
+	ld	hl, (ix - 21)
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jr	z, BB5_40
+	ld	iy, -3145600
+	call	_os_NewLine
+	ld	hl, (ix - 21)
+	dec	hl
+	jr	BB5_38
+BB5_40:
+	call	_os_GetCSC
+	or	a, a
+	jr	z, BB5_40
+	or	a, a
+	sbc	hl, hl
+BB5_42:
 	ld	sp, ix
 	pop	ix
 	ret
 	section	.text,"ax",@progbits
 	section	.rodata,"a",@progbits
-	private	JTI4_0
-JTI4_0:
-	dl	BB4_16
-	dl	BB4_17
-	dl	BB4_16
-	dl	BB4_17
-	dl	BB4_8
-	dl	BB4_8
-	dl	BB4_8
-	dl	BB4_8
-	dl	BB4_22
-	dl	BB4_8
-	dl	BB4_8
-	dl	BB4_8
-	dl	BB4_8
-	dl	BB4_8
-	dl	BB4_34
-	private	JTI4_1
-JTI4_1:
-	dl	BB4_25
-	dl	BB4_26
-	dl	BB4_27
-	dl	BB4_28
-	dl	BB4_29
-	dl	BB4_30
+	private	JTI5_0
+JTI5_0:
+	dl	BB5_16
+	dl	BB5_17
+	dl	BB5_16
+	dl	BB5_17
+	dl	BB5_8
+	dl	BB5_8
+	dl	BB5_8
+	dl	BB5_8
+	dl	BB5_22
+	dl	BB5_8
+	dl	BB5_8
+	dl	BB5_8
+	dl	BB5_8
+	dl	BB5_8
+	dl	BB5_33
+	private	JTI5_1
+JTI5_1:
+	dl	BB5_26
+	dl	BB5_27
+	dl	BB5_28
+	dl	BB5_29
+	dl	BB5_30
+	dl	BB5_31
+	dl	BB5_32
 
 	section	.rodata,"a",@progbits
 	private	_.str
@@ -1052,14 +1286,6 @@ _keys:
 	dl	6
 
 	section	.rodata,"a",@progbits
-	public	_colors
-_colors:
-	dl	55534
-	dl	37457
-	dl	434
-	dl	30397
-
-	section	.rodata,"a",@progbits
 	private	_.str.56
 _.str.56:
 	db	1 dup 0
@@ -1072,7 +1298,7 @@ _.str.57:
 	section	.rodata,"a",@progbits
 	private	_.str.58
 _.str.58:
-	db	"You are %.1f%% straight, %.1f%% bisexual, and %.1f%% gay.", 0
+	db	"You are %.1f%% straight, %.1f%% bisexual, and %.1f%% gay. Thank you for taking my ""Am I gay?"" test! Share it with all your friends! Take it again! Use it to define your personality! I don't care.", 0
 
 	ident	"clang version 15.0.0 (https://github.com/jacobly0/llvm-project 6d9aa7a16db70f3d02ae304b08d4a03011281fef)"
 	extern	__Unwind_SjLj_Register
@@ -1088,10 +1314,9 @@ _.str.58:
 	extern	_os_PutStrFull
 	extern	__fdiv
 	extern	__imulu
-	extern	__Unwind_SjLj_Unregister
 	extern	_os_NewLine
-	extern	_os_FontSelect
 	extern	_os_GetCSC
 	extern	__fcmp
 	extern	__frameset0
 	extern	_os_HomeUp
+	extern	__Unwind_SjLj_Unregister
