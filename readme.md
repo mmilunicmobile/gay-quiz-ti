@@ -40,9 +40,12 @@ $P_a$ is the final straight portion, $P_b$ is the final bisexual portion, and $P
 
 Below is a system of equations that could theoretically be solved to give exact answers for the three portions system.
 
-$$\left(C_a + \frac{C_{ab}*P_a}{P_a + P_b} + \frac{C_{ac}*P_a}{P_a + P_c} + C_{abc} * P_a\right)=P_a*C$$
-$$\left(C_b + \frac{C_{ab}*P_b}{P_a + P_b} + \frac{C_{bc}*P_b}{P_b + P_c} + C_{abc} * P_b\right)=P_b*C$$
-$$\left(C_c + \frac{C_{ac}*P_c}{P_a + P_c} + \frac{C_{ac}*P_c}{P_a + P_c} + C_{abc} * P_c\right)=P_c*C$$
+$$\left(C_a + \frac{C_{ab} * P_a}{P_a + P_b} + \frac{C_{ac} * P_a}{P_a + P_c} + C_{abc} * P_a\right)=P_a*C$$
+
+$$\left(C_b + \frac{C_{ab} * P_b}{P_a + P_b} + \frac{C_{bc} * P_b}{P_b + P_c} + C_{abc} * P_b\right)=P_b*C$$
+
+$$\left(C_c + \frac{C_{ac} * P_c}{P_a + P_c} + \frac{C_{ac} * P_c}{P_a + P_c} + C_{abc} * P_c\right)=P_c*C$$
+
 $$P_a + P_b + P_c = 1$$
 I have not solved it.
 
