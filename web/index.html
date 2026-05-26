@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Am I Gay? - TI-84 Plus CE Quiz</title>
+<style>
+@font-face {
+  font-family: 'TICELarge';
+  src: url('TICELarge.woff') format('woff');
+  font-smooth: never;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+}
+
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+body {
+  background:#1a1a2e;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  padding:10px;
+  font-family:Arial,Helvetica,sans-serif;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+
+.calculator {
+  background:#1e1e1e;
+  border-radius:12px;
+  padding:12px 14px 16px;
+  max-width:382px;
+  width:100%;
+  box-shadow:0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.brand-bar {
+  background:linear-gradient(180deg, #c8c8c8 0%, #a0a0a0 50%, #b0b0b0 100%);
+  border-radius:4px 4px 0 0;
+  padding:4px 10px;
+  text-align:center;
+  font-size:11px;
+  font-weight:bold;
+  color:#1a1a1a;
+  letter-spacing:1px;
+}
+
+.screen-bezel {
+  background:#2a2a2a;
+  padding:8px 10px;
+  border-left:3px solid #333;
+  border-right:3px solid #333;
+}
+
+.screen {
+  width:320px;
+  height:240px;
+  background:#ffffff;
+  border:2px solid #1a1a1a;
+  margin:0 auto;
+  overflow:hidden;
+  position:relative;
+  transition:background 0.08s;
+}
+
+.screen.black {
+  background:#000000;
+}
+
+.screen pre {
+  font-family:'TICELarge','Courier New',Courier,monospace;
+  font-size:18px;
+  line-height:21px;
+  color:#000000;
+  padding:0;
+  margin:0;
+  width:100%;
+  height:100%;
+  letter-spacing:0;
+  white-space:pre;
+  -webkit-font-smoothing:none;
+  -moz-osx-font-smoothing:unset;
+  font-smooth:never;
+  text-rendering:optimizeSpeed;
+  pointer-events:none;
+}
+
+.keypad {
+  background:#222;
+  border-radius:0 0 8px 8px;
+  padding:10px 8px 8px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.key-row {
+  display:flex;
+  justify-content:center;
+  gap:6px;
+}
+
+button {
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:14px;
+  font-weight:bold;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  transition:background 0.08s, transform 0.05s;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+
+button:active { transform:scale(0.93); }
+
+.btn-num {
+  background:linear-gradient(180deg, #5a5a5a 0%, #3d3d3d 50%, #4a4a4a 100%);
+  color:#fff;
+  width:50px; height:44px;
+  font-size:18px;
+  box-shadow:0 2px 0 #2a2a2a, 0 3px 6px rgba(0,0,0,0.3);
+}
+.btn-num:active { background:linear-gradient(180deg, #4a4a4a 0%, #333 50%, #404040 100%); }
+
+.btn-arrow {
+  background:linear-gradient(180deg, #555 0%, #3a3a3a 50%, #454545 100%);
+  color:#ddd;
+  width:50px; height:44px;
+  font-size:16px;
+  box-shadow:0 2px 0 #282828, 0 3px 6px rgba(0,0,0,0.3);
+}
+.btn-arrow:active { background:linear-gradient(180deg, #484848 0%, #303030 50%, #3d3d3d 100%); }
+
+.btn-fn {
+  background:linear-gradient(180deg, #5a5a5a 0%, #3d3d3d 50%, #4a4a4a 100%);
+  color:#eee;
+  height:44px; padding:0 10px; min-width:52px;
+  font-size:13px;
+  box-shadow:0 2px 0 #2a2a2a, 0 3px 6px rgba(0,0,0,0.3);
+}
+.btn-fn:active { background:linear-gradient(180deg, #4a4a4a 0%, #333 50%, #404040 100%); }
+
+.btn-enter {
+  background:linear-gradient(180deg, #3366cc 0%, #1a3d80 50%, #224488 100%);
+  color:#fff;
+  flex:1; height:44px;
+  font-size:16px;
+  box-shadow:0 2px 0 #152a55, 0 3px 6px rgba(0,0,0,0.3);
+}
+.btn-enter:active { background:linear-gradient(180deg, #2955aa 0%, #142f66 50%, #1b3566 100%); }
+
+.btn-clear {
+  background:linear-gradient(180deg, #8b4444 0%, #662222 50%, #773333 100%);
+  box-shadow:0 2px 0 #441818, 0 3px 6px rgba(0,0,0,0.3);
+}
+.btn-clear:active { background:linear-gradient(180deg, #773939 0%, #551c1c 50%, #662929 100%); }
+
+.dpad-container { display:flex; flex-direction:column; align-items:center; }
+.dpad-row { display:flex; gap:6px; }
+.key-spacer { width:50px; height:44px; }
+
+@media (max-width:420px) {
+  .calculator { padding:8px 6px 10px; border-radius:8px; }
+  .screen-bezel { padding:5px 4px; }
+  .screen {
+    width:100%; height:auto; aspect-ratio:320/240;
+  }
+  .screen pre {
+    font-size:clamp(12px, 4.5vw, 18px);
+    line-height:1.166;
+  }
+  button { font-size:12px; }
+  .btn-num { width:40px; height:38px; font-size:16px; }
+  .btn-arrow { width:40px; height:38px; font-size:14px; }
+  .btn-fn { height:38px; min-width:42px; font-size:11px; padding:0 6px; }
+  .btn-enter { height:38px; font-size:14px; }
+  .key-spacer { width:40px; height:38px; }
+  .key-row { gap:4px; }
+  .keypad { gap:4px; padding:8px 4px 6px; }
+}
+
+@media (max-width:340px) {
+  .btn-num { width:34px; height:34px; font-size:14px; }
+  .btn-arrow { width:34px; height:34px; font-size:12px; }
+  .btn-fn { height:34px; min-width:36px; font-size:10px; }
+  .btn-enter { height:34px; font-size:12px; }
+  .key-spacer { width:34px; height:34px; }
+}
+</style>
+</head>
+<body>
+
+<div class="calculator">
+  <div class="brand-bar">TI-84 Plus CE</div>
+  <div class="screen-bezel">
+    <div class="screen" id="screen">
+      <pre id="display"></pre>
+    </div>
+  </div>
+  <div class="keypad">
+    <div class="key-row">
+      <button class="btn-num" data-key="1" title="Answer 1">1</button>
+      <button class="btn-num" data-key="2" title="Answer 2">2</button>
+      <button class="btn-num" data-key="3" title="Answer 3">3</button>
+      <button class="btn-num" data-key="4" title="Answer 4">4</button>
+    </div>
+    <div class="key-row">
+      <div class="dpad-container">
+        <div class="dpad-row">
+          <div class="key-spacer"></div>
+          <button class="btn-arrow" data-key="ArrowUp" title="Up">&#9650;</button>
+          <div class="key-spacer"></div>
+        </div>
+        <div class="dpad-row">
+          <button class="btn-arrow" data-key="ArrowLeft" title="Left">&#9664;</button>
+          <div class="key-spacer" style="background:#333;border-radius:3px;"></div>
+          <button class="btn-arrow" data-key="ArrowRight" title="Right">&#9654;</button>
+        </div>
+        <div class="dpad-row">
+          <div class="key-spacer"></div>
+          <button class="btn-arrow" data-key="ArrowDown" title="Down">&#9660;</button>
+          <div class="key-spacer"></div>
+        </div>
+      </div>
+    </div>
+    <div class="key-row">
+      <button class="btn-fn btn-clear" data-key="Clear" title="Quit">CLEAR</button>
+      <button class="btn-fn" data-key="Mode" title="Skip to results">MODE</button>
+      <button class="btn-fn" data-key="Del" title="Skip question">DEL</button>
+      <button class="btn-enter" data-key="Enter" title="Confirm">ENTER</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ── Data from original C program ────────────────────────────────── */
+  var questions = [
+    ["1. Why did you decide to take this test?","(1) To check how gay I am.","(2) All my friends kept saying I was gay and should take this test.","(3) Just to have fun!","(4) To make sure I'm straight!"],
+    ["2. Have you ever looked at a person of the same sex and felt attracted in a sexual way?","(1) Yes, all the time!","(2) Sometimes, but I also have opposite sex crushes!","(3) Never, I am not gay at all!","(4) Very rarely, but sometimes!"],
+    ["3. If your best friend confessed to you that they are gay, you would:","(1) Welcome them to the club!","(2) Start flirting with them!","(3) Make a joke about it.","(4) Tell them that sometimes you feel the same way."],
+    ["4. Have you ever worn or fantasized about wearing clothes of another sex?","(1) All the time!","(2) Sometimes, but I wouldn't go out in public like that.","(3) Never!","(4) Rarely, but sometimes I may wear my partner's clothes!"],
+    ["5. If there were no people left in the world except for someone of the same sex, you would:","(1) Be happy, as no one would ever flirt with my partner!","(2) Be dissapointed you are losing out on the other sex.","(3) Fall into despair as you will never have a sexual partner again!","(4) Be confused what just happened and do none of the others."],
+    ["6. Have you ever kissed someone of the same sex?","(1) Yes, I do it all the time!","(2) Once or twice!","(3) No way I'm doing that!","(4) I don't pull."],
+    ["7. How frequently do you dream about the same sex romantically?","(1) All of my dreams are about the same sex!","(2) Most of the time.","(3) Rarely to never.","(4) I don't dream about people."],
+    ["8. Would you be comfortable with a gay colleague flirting with you at a (possibly hypothetical) workplace?","(1) Sure, it's a lot of fun!","(2) I guess so, it depends on the situation!","(3) I would feel very awkward about it!","(4) It's never appropriate to flirt at work!"],
+    ["9. Your friends decided to go party at a gay bar, you would:","(1) Feel like you're going home! Let's go party!","(2) Get excited to check out a new venue!","(3) Feel threatened or uncomfortable.","(4) Get secretly excited, as you always wanted to try being super fruity."],
+    ["10. If your partner offered you a three way \"sleepover\" with someone of the same sex, you would:","(1) Feel excited about it!","(2) Never! I only like the opposite sex!","(3) Do it as I don't care about the sex of another person!","(4) Again, I don't do much pulling."],
+    ["11. What instrument do you play?","(1) You play some exotic instrument called the clarinet.","(2) You play many instruments, but shun all clarinets.","(3) You play any other good instrument.","(4) You don't play an instrument."]
+  ];
+
+  /*
+   enum sexuality { cis=0, bi=1, gay=2, cisgay=3, cisbi=4, bigay=5, nil=6 };
+   keys[question][answer] = enum value
+   q1:{gay=2,bigay=5,nil=6,cisgay=3}  q2:{bigay=5,bi=1,cis=0,bi=1}
+   q3:{gay=2,bigay=5,nil=6,gay=2}     q4:{gay=2,bigay=5,cis=0,bi=1}
+   q5:{gay=2,bi=1,cis=0,nil=6}        q6:{bigay=5,bi=1,cis=0,nil=6}
+   q7:{gay=2,bi=1,cisbi=4,nil=6}      q8:{bigay=5,bigay=5,cisbi=4,nil=6}
+   q9:{gay=2,bigay=5,cis=0,gay=2}     q10:{gay=2,cis=0,bi=1,nil=6}
+   q11:{bigay=5,cis=0,nil=6,nil=6}
+  */
+  var keys = [
+    [2,5,6,3], [5,1,0,1], [2,5,6,2], [2,5,0,1], [2,1,0,6],
+    [5,1,0,6], [2,1,4,6], [5,5,4,6], [2,5,0,2], [2,0,1,6], [5,0,6,6]
+  ];
+
+  /* ── Screen constants ────────────────────────────────────────────── */
+  var COLS = 26;
+  var ROWS = 10;
+
+  /* ── State ───────────────────────────────────────────────────────── */
+  var state = 'intro';
+  var currentQ = 0;
+  var selection = 0;
+  var answers = new Array(11);
+  var screenRows = [];
+
+  // answer counters (enum: cis=0, bi=1, gay=2, cisgay=3, cisbi=4, bigay=5, nil=6)
+  var cisCount = 0, biCount = 0, gayCount = 0;
+  var cisgayCount = 0, cisbiCount = 0, bigayCount = 0, cisbigayCount = 0;
+
+  var displayEl = document.getElementById('display');
+  var screenEl = document.getElementById('screen');
+
+  // typing animation
+  var typingTimer = null;
+  var typedIndex = 0;
+  var targetContentEnd = 0;
+
+  /* ── Screen helpers ──────────────────────────────────────────────── */
+  function clearScreen() {
+    screenRows = [];
+    for (var r = 0; r < ROWS; r++) screenRows.push(' '.repeat(COLS));
+  }
+
+  function fillRow(row, text) {
+    var t = (text || '').substring(0, COLS);
+    screenRows[row] = (t + ' '.repeat(COLS)).substring(0, COLS);
+  }
+
+  function wrapText(text) {
+    var out = [];
+    for (var i = 0; i < text.length; i += COLS) {
+      out.push(text.substring(i, i + COLS));
+    }
+    return out;
+  }
+
+  function clearFromRow(startRow) {
+    for (var r = startRow; r < ROWS; r++) screenRows[r] = ' '.repeat(COLS);
+  }
+
+  /* ── Typewriter animation ────────────────────────────────────────── */
+  function stopTyping() {
+    if (typingTimer) { clearInterval(typingTimer); typingTimer = null; }
+  }
+
+  function renderTyped() {
+    var result = '';
+    var pos = 0;
+    for (var r = 0; r < ROWS; r++) {
+      for (var c = 0; c < COLS; c++) {
+        if (pos < typedIndex) {
+          result += screenRows[r][c];
+        } else {
+          result += ' ';
+        }
+        pos++;
+      }
+      if (r < ROWS - 1) result += '\n';
+    }
+    displayEl.textContent = result;
+  }
+
+  function startTyping() {
+    stopTyping();
+
+    // find last non-space character position across all rows
+    var pos = 0;
+    var lastNonSpace = -1;
+    for (var r = 0; r < ROWS; r++) {
+      for (var c = 0; c < COLS; c++) {
+        if (screenRows[r][c] !== ' ') lastNonSpace = pos;
+        pos++;
+      }
+    }
+
+    if (lastNonSpace < 0) {
+      displayEl.textContent = screenRows.join('\n');
+      return;
+    }
+
+    typedIndex = 0;
+    targetContentEnd = lastNonSpace + 1;
+
+    var TYPING_SPEED = 2;
+    typingTimer = setInterval(function() {
+      typedIndex++;
+      if (typedIndex >= targetContentEnd) {
+        stopTyping();
+        displayEl.textContent = screenRows.join('\n');
+        return;
+      }
+      renderTyped();
+    }, TYPING_SPEED);
+  }
+
+  /* ── Display functions ───────────────────────────────────────────── */
+  function showIntro() {
+    state = 'intro';
+    var text = 'This is an "Am I gay?" test port. Use arrow keys or number keys to choose your answer, then press enter to continue, press clear to quit, or press mode to skip to the results. There are no accuracy guarantees. All rights are reserved. Press any key to begin.';
+    var lines = wrapText(text);
+    for (var i = 0; i < lines.length && i < ROWS; i++) fillRow(i, lines[i]);
+    if (lines.length < ROWS) fillRow(lines.length, 'Press any key...');
+    startTyping();
+  }
+
+  function showQuestionDisplay() {
+    var lines = wrapText(questions[currentQ][0]);
+    var row = 0;
+    for (var i = 0; i < lines.length && row < ROWS; i++) {
+      fillRow(row, lines[i]);
+      row++;
+    }
+    if (row < ROWS) { screenRows[row] = ' '.repeat(COLS); row++; }
+    if (row < ROWS) {
+      fillRow(row, questions[currentQ][selection + 1]);
+      row++;
+    }
+    clearFromRow(row);
+    startTyping();
+  }
+
+  function showResults() {
+    state = 'results';
+    var p = calculateFinalPortions(
+      cisCount, biCount, gayCount,
+      cisbiCount, cisgayCount, bigayCount, cisbigayCount
+    );
+    var text = 'You are ' + (p.cis*100).toFixed(1) + '% straight, ' +
+               (p.bi*100).toFixed(1) + '% bisexual, and ' +
+               (p.gay*100).toFixed(1) + '% gay. ' +
+               'Thank you for taking my "Am I gay?" test! ' +
+               'Share it with all your friends! Take it again! ' +
+               'Use it to define your personality! I don\'t care.';
+    var lines = wrapText(text);
+    for (var i = 0; i < lines.length && i < ROWS; i++) fillRow(i, lines[i]);
+    if (lines.length < ROWS) fillRow(Math.min(lines.length+1,ROWS-1), 'Press any key to restart.');
+    clearFromRow(Math.min(lines.length+2,ROWS));
+    startTyping();
+  }
+
+  /* ── Selection navigation ────────────────────────────────────────── */
+  function bumpUpSelection() {
+    if (selection < 3) { selection++; showQuestionDisplay(); }
+  }
+  function bumpDownSelection() {
+    if (selection > 0) { selection--; showQuestionDisplay(); }
+  }
+
+  /* ── Algorithm ───────────────────────────────────────────────────── */
+  function calculateFinalPortions(c_a, c_b, c_c, c_ab, c_ac, c_bc, c_abc) {
+    var p_a = 0.33, p_b = 0.33, p_c = 0.34;
+    var c = c_a + c_b + c_c + c_ab + c_ac + c_bc + c_abc;
+    if (c === 0) return { cis:0.33, bi:0.33, gay:0.34 };
+    for (var i = 0; i < 20; i++) {
+      var da = p_a + p_b, db = p_a + p_c, dc = p_b + p_c;
+      var t_a = (c_a + c_ab*p_a/da + c_ac*p_a/db + c_abc*p_a) / c;
+      var t_b = (c_b + c_ab*p_b/da + c_bc*p_b/dc + c_abc*p_b) / c;
+      var t_c = (c_c + c_ac*p_c/db + c_bc*p_c/dc + c_abc*p_c) / c;
+      p_a = t_a; p_b = t_b; p_c = t_c;
+    }
+    return { cis:p_a, bi:p_b, gay:p_c };
+  }
+
+  /* ── Tally ───────────────────────────────────────────────────────── */
+  function tallyAnswer(qIndex, ansIndex) {
+    switch (keys[qIndex][ansIndex]) {
+      case 0: cisCount++; break;
+      case 1: biCount++; break;
+      case 2: gayCount++; break;
+      case 3: cisgayCount++; break;
+      case 4: cisbiCount++; break;
+      case 5: bigayCount++; break;
+      case 6: cisbigayCount++; break;
+    }
+  }
+
+  /* ── Question progression ────────────────────────────────────────── */
+  function confirmAnswer() {
+    answers[currentQ] = selection;
+    tallyAnswer(currentQ, selection);
+    advanceQuestion();
+  }
+  function skipQuestion() {
+    answers[currentQ] = undefined;
+    advanceQuestion();
+  }
+  function advanceQuestion() {
+    currentQ++;
+    selection = 0;
+    if (currentQ >= 11) showResults();
+    else { state = 'quiz'; showQuestionDisplay(); }
+  }
+  function skipToResults() { showResults(); }
+
+  function beginQuiz() {
+    state = 'quiz';
+    currentQ = 0;
+    selection = 0;
+    answers = new Array(11);
+    cisCount = biCount = gayCount = 0;
+    cisbiCount = cisgayCount = bigayCount = cisbigayCount = 0;
+    showQuestionDisplay();
+  }
+
+  /* ── Exit with black screen flash ────────────────────────────────── */
+  function exitProgram() {
+    stopTyping();
+    displayEl.textContent = '';
+    screenEl.classList.add('black');
+    displayEl.style.visibility = 'hidden';
+    setTimeout(function() {
+      screenEl.classList.remove('black');
+      displayEl.style.visibility = 'visible';
+      showIntro();
+    }, 500);
+  }
+
+  /* ── Input handling ──────────────────────────────────────────────── */
+  function handleKey(key) {
+    if (state === 'intro') { beginQuiz(); return; }
+    if (state === 'results') { exitProgram(); return; }
+    if (state !== 'quiz') return;
+
+    switch (key) {
+      case '1': case '2': case '3': case '4':
+        selection = parseInt(key,10) - 1;
+        showQuestionDisplay();
+        break;
+      case 'ArrowUp': case 'ArrowLeft':
+        bumpDownSelection();
+        break;
+      case 'ArrowDown': case 'ArrowRight':
+        bumpUpSelection();
+        break;
+      case 'Enter':
+        confirmAnswer();
+        break;
+      case 'Clear': case 'Escape':
+        exitProgram();
+        break;
+      case 'Mode': case 'm': case 'M':
+        skipToResults();
+        break;
+      case 'Del': case 'Delete': case 'Backspace':
+        skipQuestion();
+        break;
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    var handled = ['1','2','3','4','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Enter','Escape','m','M','Delete','Backspace'];
+    if (handled.indexOf(e.key) >= 0) e.preventDefault();
+    handleKey(e.key);
+  });
+
+  document.querySelectorAll('.keypad button').forEach(function(btn) {
+    btn.addEventListener('click', function() { handleKey(btn.getAttribute('data-key')); });
+    btn.addEventListener('touchstart', function(e) { e.preventDefault(); });
+  });
+
+  /* ── Start ───────────────────────────────────────────────────────── */
+  clearScreen();
+  showIntro();
+})();
+</script>
+</body>
+</html>
