@@ -559,7 +559,6 @@ button:active { transform:scale(0.93); }
 
   document.querySelectorAll('.keypad button').forEach(function(btn) {
     btn.addEventListener('click', function() { handleKey(btn.getAttribute('data-key')); });
-    btn.addEventListener('touchstart', function(e) { e.preventDefault(); });
   });
 
   /* ── Start ───────────────────────────────────────────────────────── */
