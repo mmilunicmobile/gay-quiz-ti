@@ -56,12 +56,14 @@ body {
 
 .screen {
   width:320px;
-  height:240px;
+  height:260px;
   background:#ffffff;
   border:2px solid #1a1a1a;
   margin:0 auto;
   overflow:hidden;
   position:relative;
+  display:flex;
+  flex-direction:column;
   transition:background 0.08s;
 }
 
@@ -69,15 +71,27 @@ body {
   background:#000000;
 }
 
+.screen.black .topbar {
+  visibility:hidden;
+}
+
+.topbar {
+  width:100%;
+  height:auto;
+  display:block;
+  flex:0 0 auto;
+}
+
 .screen pre {
   font-family:'TICELarge','Courier New',Courier,monospace;
-  font-size:18px;
+  font-size:17px;
   line-height:21px;
   color:#000000;
   padding:0;
   margin:0;
   width:100%;
-  height:100%;
+  flex:1 1 auto;
+  min-height:0;
   letter-spacing:0;
   white-space:pre;
   -webkit-font-smoothing:none;
@@ -197,6 +211,7 @@ button:active { transform:scale(0.93); }
   <div class="brand-bar">TI-84 Plus CE</div>
   <div class="screen-bezel">
     <div class="screen" id="screen">
+      <img class="topbar" src="topbar.png" alt="TI-84 status bar">
       <pre id="display"></pre>
     </div>
   </div>
@@ -289,8 +304,10 @@ button:active { transform:scale(0.93); }
 
   // typing animation
   var typingTimer = null;
+  var typingFramePending = false;
   var typedIndex = 0;
   var targetContentEnd = 0;
+  var previousScreenRows = [];
 
   /* ── Screen helpers ──────────────────────────────────────────────── */
   function clearScreen() {
@@ -317,7 +334,24 @@ button:active { transform:scale(0.93); }
 
   /* ── Typewriter animation ────────────────────────────────────────── */
   function stopTyping() {
-    if (typingTimer) { clearInterval(typingTimer); typingTimer = null; }
+    if (typingTimer) { clearTimeout(typingTimer); typingTimer = null; }
+    typingFramePending = false;
+  }
+
+  function scheduleTypingFrame() {
+    if (typingFramePending) return;
+    typingFramePending = true;
+    typingTimer = setTimeout(function() {
+      typingFramePending = false;
+      typedIndex += 3;
+      if (typedIndex >= targetContentEnd) {
+        stopTyping();
+        displayEl.textContent = screenRows.join('\n');
+        return;
+      }
+      renderTyped();
+      scheduleTypingFrame();
+    }, 16);
   }
 
   function renderTyped() {
@@ -328,7 +362,7 @@ button:active { transform:scale(0.93); }
         if (pos < typedIndex) {
           result += screenRows[r][c];
         } else {
-          result += ' ';
+          result += (previousScreenRows[r] && previousScreenRows[r][c]) || ' ';
         }
         pos++;
       }
@@ -339,6 +373,7 @@ button:active { transform:scale(0.93); }
 
   function startTyping() {
     stopTyping();
+    previousScreenRows = screenRows.slice(0);
 
     // find last non-space character position across all rows
     var pos = 0;
@@ -358,16 +393,8 @@ button:active { transform:scale(0.93); }
     typedIndex = 0;
     targetContentEnd = lastNonSpace + 1;
 
-    var TYPING_SPEED = 2;
-    typingTimer = setInterval(function() {
-      typedIndex++;
-      if (typedIndex >= targetContentEnd) {
-        stopTyping();
-        displayEl.textContent = screenRows.join('\n');
-        return;
-      }
-      renderTyped();
-    }, TYPING_SPEED);
+    renderTyped();
+    scheduleTypingFrame();
   }
 
   /* ── Display functions ───────────────────────────────────────────── */
@@ -387,9 +414,9 @@ button:active { transform:scale(0.93); }
       fillRow(row, lines[i]);
       row++;
     }
-    if (row < ROWS) { screenRows[row] = ' '.repeat(COLS); row++; }
-    if (row < ROWS) {
-      fillRow(row, questions[currentQ][selection + 1]);
+    var answerLines = wrapText(questions[currentQ][selection + 1]);
+    for (var j = 0; j < answerLines.length && row < ROWS; j++) {
+      fillRow(row, answerLines[j]);
       row++;
     }
     clearFromRow(row);
